@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>¿Me esperarías, bb? 💕</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --pink:    #f7c5d0;
+      --blush:   #fde8ed;
+      --lavender:#e8d5f5;
+      --mint:    #d5f0e8;
+      --peach:   #fde3cc;
+      --cream:   #fff9f5;
+      --text:    #6b4f5a;
+      --accent:  #e88fa8;
+    }
+
+    * { margin:0; padding:0; box-sizing:border-box; }
+
+    body {
+      font-family:'Lato',sans-serif;
+      background: var(--cream);
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      overflow-x:hidden;
+      position:relative;
+    }
+
+    body::before, body::after {
+      content:'';
+      position:fixed;
+      border-radius:50%;
+      filter:blur(80px);
+      opacity:.45;
+      pointer-events:none;
+      z-index:0;
+    }
+    body::before {
+      width:500px; height:500px;
+      background: radial-gradient(circle, var(--pink), var(--lavender));
+      top:-120px; left:-120px;
+    }
+    body::after {
+      width:400px; height:400px;
+      background: radial-gradient(circle, var(--peach), var(--mint));
+      bottom:-100px; right:-100px;
+    }
+
+    .card {
+      position:relative;
+      z-index:1;
+      background: rgba(255,255,255,.78);
+      backdrop-filter: blur(18px);
+      border-radius:32px;
+      box-shadow: 0 8px 40px rgba(232,143,168,.18);
+      max-width:620px;
+      width:92%;
+      padding:48px 40px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:26px;
+      animation: fadeIn .8s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity:0; transform:translateY(24px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+
+    .hearts-top { font-size:2rem; letter-spacing:8px; }
+
+    h1 {
+      font-family:'Playfair Display',serif;
+      font-size:clamp(1.3rem,3.8vw,1.9rem);
+      color: var(--text);
+      text-align:center;
+      line-height:1.5;
+    }
+    h1 em { color: var(--accent); font-style:italic; }
+
+    /* MAP */
+    .map-wrap {
+      width:100%;
+      border-radius:20px;
+      overflow:hidden;
+      position:relative;
+      background: linear-gradient(135deg,#d0eaf7 0%,#c8e6d4 40%,#f0d8c8 70%,#e8d0f0 100%);
+      height:180px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:0 30px;
+    }
+    .map-wrap::before {
+      content:'';
+      position:absolute;
+      inset:0;
+      background:
+        radial-gradient(circle at 20% 60%, rgba(255,255,255,.3) 0%, transparent 50%),
+        radial-gradient(circle at 80% 40%, rgba(255,255,255,.3) 0%, transparent 50%);
+    }
+    .map-line {
+      position:absolute;
+      top:50%; left:50%;
+      transform:translate(-50%,-50%);
+      width:52%;
+      border-top: 3px dashed rgba(232,143,168,.65);
+    }
+    .plane {
+      position:absolute;
+      top:calc(50% - 14px);
+      left:50%;
+      transform:translateX(-50%);
+      font-size:1.4rem;
+      animation: fly 3s ease-in-out infinite;
+    }
+    @keyframes fly {
+      0%,100% { transform:translateX(-50%) translateY(0); }
+      50%      { transform:translateX(-50%) translateY(-8px); }
+    }
+
+    .avatar-block {
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:6px;
+      z-index:2;
+    }
+    .avatar {
+      width:66px; height:66px;
+      border-radius:50%;
+      border:3px solid white;
+      box-shadow:0 4px 14px rgba(0,0,0,.12);
+      font-size:2rem;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      animation: float 3s ease-in-out infinite;
+    }
+    .avatar.joaquin { background: linear-gradient(135deg,#b8d4f0,#d0c8f0); animation-delay:.5s; }
+    .avatar.dafne   { background: linear-gradient(135deg,#f0b8cc,#f0d0c8); }
+
+    @keyframes float {
+      0%,100% { transform:translateY(0); }
+      50%      { transform:translateY(-6px); }
+    }
+    .avatar-name {
+      font-family:'Playfair Display',serif;
+      font-size:.85rem;
+      color: var(--text);
+      font-weight:700;
+      background:rgba(255,255,255,.85);
+      border-radius:20px;
+      padding:2px 10px;
+    }
+
+    /* COUNTDOWN */
+    .countdown-label {
+      font-size:.78rem;
+      color: var(--accent);
+      letter-spacing:2px;
+      text-transform:uppercase;
+      font-weight:700;
+    }
+    .countdown {
+      display:flex;
+      gap:14px;
+    }
+    .time-block {
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      background: linear-gradient(135deg,var(--pink),var(--lavender));
+      border-radius:16px;
+      padding:12px 18px;
+      min-width:70px;
+      box-shadow:0 4px 12px rgba(232,143,168,.2);
+    }
+    .time-num {
+      font-family:'Playfair Display',serif;
+      font-size:2rem;
+      color: var(--text);
+      font-weight:700;
+      line-height:1;
+    }
+    .time-unit {
+      font-size:.62rem;
+      color: var(--accent);
+      letter-spacing:1.5px;
+      text-transform:uppercase;
+      margin-top:4px;
+    }
+
+    /* BUTTONS */
+    .buttons-wrap {
+      display:flex;
+      gap:20px;
+      justify-content:center;
+      align-items:center;
+      position:relative;
+      min-height:56px;
+      width:100%;
+    }
+    .btn {
+      padding:14px 38px;
+      border:none;
+      border-radius:50px;
+      font-family:'Playfair Display',serif;
+      font-size:1.05rem;
+      cursor:pointer;
+      transition: transform .15s, box-shadow .15s;
+      white-space:nowrap;
+    }
+    .btn-yes {
+      background: linear-gradient(135deg,var(--accent),#f0a0bc);
+      color:white;
+      box-shadow:0 6px 20px rgba(232,143,168,.4);
+    }
+    .btn-yes:hover { transform:scale(1.06); box-shadow:0 8px 26px rgba(232,143,168,.5); }
+
+    .btn-no {
+      background: linear-gradient(135deg,#e8e0f0,#d8d0e8);
+      color: var(--text);
+      box-shadow:0 4px 14px rgba(0,0,0,.08);
+    }
+    .btn-no.escaped {
+      position:fixed;
+      transition: left .22s cubic-bezier(.34,1.56,.64,1), top .22s cubic-bezier(.34,1.56,.64,1);
+      z-index: 9999;
+    }
+
+    /* SUCCESS */
+    .success-msg {
+      display:none;
+      flex-direction:column;
+      align-items:center;
+      gap:12px;
+      animation: popIn .5s cubic-bezier(.34,1.56,.64,1);
+    }
+    @keyframes popIn {
+      from { opacity:0; transform:scale(.6); }
+      to   { opacity:1; transform:scale(1); }
+    }
+    .success-msg h2 {
+      font-family:'Playfair Display',serif;
+      font-size:1.8rem;
+      color: var(--accent);
+      text-align:center;
+    }
+    .success-msg p {
+      color: var(--text);
+      font-size:1rem;
+      text-align:center;
+      line-height:1.6;
+    }
+
+    /* CONFETTI canvas */
+    #confetti-canvas {
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      z-index:999;
+    }
+
+    .note {
+      font-size:.84rem;
+      color: var(--accent);
+      font-style:italic;
+    }
+
+    /* DISTANCE BADGE */
+    .distance-badge {
+      position:absolute;
+      bottom:10px;
+      left:50%;
+      transform:translateX(-50%);
+      background:rgba(255,255,255,.88);
+      border-radius:20px;
+      padding:4px 14px;
+      font-family:'Playfair Display',serif;
+      font-size:.82rem;
+      color: var(--accent);
+      font-weight:700;
+      white-space:nowrap;
+      box-shadow:0 2px 8px rgba(232,143,168,.2);
+      z-index:3;
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="confetti-canvas"></canvas>
+
+<div class="card">
+
+  <div class="hearts-top">🌸 💕 🌸</div>
+
+  <h1>Perdóname por irme lejos unos días, <em>bb</em>…<br>¿Me esperarías para volver a compartir lindos momentos?</h1>
+
+  <!-- MAP -->
+  <div class="map-wrap">
+    <div class="avatar-block">
+      <div class="avatar joaquin">🧔</div>
+      <span class="avatar-name">Joaquin</span>
+    </div>
+    <div class="map-line"></div>
+    <div class="plane">✈️</div>
+    <div class="distance-badge">📍 794 km de distancia</div>
+    <div class="avatar-block">
+      <div class="avatar dafne">👩‍🦱</div>
+      <span class="avatar-name">Dafne</span>
+    </div>
+  </div>
+
+  <!-- COUNTDOWN -->
+  <span class="countdown-label">⏳ Tiempo para vernos de nuevo</span>
+  <div class="countdown">
+    <div class="time-block"><span class="time-num" id="c-hours">72</span><span class="time-unit">horas</span></div>
+    <div class="time-block"><span class="time-num" id="c-mins">00</span><span class="time-unit">minutos</span></div>
+    <div class="time-block"><span class="time-num" id="c-secs">00</span><span class="time-unit">segundos</span></div>
+  </div>
+
+  <p class="note">¡Solo son 72 horas, bb! 🌷</p>
+
+  <!-- BUTTONS -->
+  <div class="buttons-wrap" id="btn-area">
+    <button class="btn btn-yes" id="btn-yes" onclick="handleYes()">¡Sí! 💕</button>
+    <button class="btn btn-no"  id="btn-no"  onclick="handleNo()">No 🙈</button>
+  </div>
+
+  <!-- SUCCESS -->
+  <div class="success-msg" id="success">
+    <h2>💕 ¡Te quiero mucho, bb!</h2>
+    <p>Pronto estaremos juntos de nuevo.<br>¡La cuenta regresiva ya empezó! 🌸✨</p>
+  </div>
+
+</div>
+
+<div id="yt-player" style="display:none;position:absolute;left:-9999px;"></div>
+
+<script>
+  // ── COUNTDOWN ──────────────────────────────
+  const totalSec = 72 * 3600;
+  const endTime  = Date.now() + totalSec * 1000;
+
+  function tick() {
+    const diff = Math.max(0, Math.floor((endTime - Date.now()) / 1000));
+    const h = Math.floor(diff / 3600);
+    const m = Math.floor((diff % 3600) / 60);
+    const s = diff % 60;
+    document.getElementById('c-hours').textContent = String(h).padStart(2,'0');
+    document.getElementById('c-mins').textContent  = String(m).padStart(2,'0');
+    document.getElementById('c-secs').textContent  = String(s).padStart(2,'0');
+  }
+  setInterval(tick, 1000);
+  tick();
+
+  // ── NO BUTTON ESCAPE ───────────────────────
+  const btnNo = document.getElementById('btn-no');
+  let noCount = 0;
+
+  function handleNo() {
+    noCount++;
+    btnNo.classList.add('escaped');
+
+    const margin = 20;
+    const bw = 130, bh = 56;
+    const maxX = window.innerWidth  - bw - margin;
+    const maxY = window.innerHeight - bh - margin;
+    const rx = margin + Math.floor(Math.random() * maxX);
+    const ry = margin + Math.floor(Math.random() * maxY);
+
+    // avoid overlapping with yes button
+    btnNo.style.left = rx + 'px';
+    btnNo.style.top  = ry + 'px';
+
+    if (noCount >= 4) {
+      btnNo.style.opacity      = '0.25';
+      btnNo.style.pointerEvents = 'none';
+    }
+  }
+
+  // ── YES BUTTON ─────────────────────────────
+  function handleYes() {
+    document.getElementById('btn-area').style.display = 'none';
+    btnNo.style.display = 'none';
+    document.getElementById('success').style.display  = 'flex';
+    startConfetti();
+    loadYT();
+  }
+
+  // ── CONFETTI ───────────────────────────────
+  const canvas = document.getElementById('confetti-canvas');
+  const ctx    = canvas.getContext('2d');
+  let parts    = [];
+
+  function startConfetti() {
+    canvas.width  = window.innerWidth;
+    canvas.height = window.innerHeight;
+    const colors = ['#f7c5d0','#e8d5f5','#d5f0e8','#fde3cc','#f0a0bc','#b8d4f0','#fde8ed','#f5e6b8'];
+    for (let i = 0; i < 200; i++) {
+      parts.push({
+        x:  Math.random() * canvas.width,
+        y:  -20 - Math.random() * canvas.height * .5,
+        w:  7 + Math.random() * 9,
+        h:  5 + Math.random() * 7,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        rot: Math.random() * 360,
+        vx: (Math.random() - .5) * 2.5,
+        vy: 1.8 + Math.random() * 3,
+        vr: (Math.random() - .5) * 5,
+      });
+    }
+    drawConfetti();
+  }
+
+  function drawConfetti() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    let any = false;
+    for (const p of parts) {
+      p.x += p.vx; p.y += p.vy; p.rot += p.vr;
+      if (p.y < canvas.height + 30) any = true;
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.rot * Math.PI / 180);
+      ctx.fillStyle = p.color;
+      ctx.beginPath();
+      ctx.ellipse(0, 0, p.w / 2, p.h / 2, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    }
+    if (any) requestAnimationFrame(drawConfetti);
+  }
+
+  window.addEventListener('resize', () => {
+    canvas.width  = window.innerWidth;
+    canvas.height = window.innerHeight;
+  });
+
+  // ── YOUTUBE ────────────────────────────────
+  const VIDEO_ID = '7khXvoZ_Les';
+
+  function loadYT() {
+    // Create a visible but off-screen iframe and autoplay it
+    const container = document.getElementById('yt-player');
+    container.innerHTML = `<iframe
+      width="1" height="1"
+      src="https://www.youtube.com/embed/${VIDEO_ID}?autoplay=1&loop=1&playlist=${VIDEO_ID}&controls=0&mute=0"
+      frameborder="0"
+      allow="autoplay; encrypted-media"
+      allowfullscreen
+    ></iframe>`;
+  }
+</script>
+</body>
+</html>
